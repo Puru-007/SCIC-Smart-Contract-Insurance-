@@ -1,88 +1,107 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>SCIC</title>
-    <link rel="stylesheet" href="font/Rimouski.css">
-    <link rel="stylesheet" href="style.css">
-    <link href="common.css" rel="stylesheet" type="text/css" media="all" />
-</head>
-<body>
-
-    <div class="container">
-        <div class="app-title">
-            <p>Weather</p>
-        </div>
-        <div class="notification"> </div>
-        <div class="weather-container">
-            <div class="weather-icon">
-                <img src="icons/unknown.png" alt="">
-            </div>
-            <div class="temperature-value">
-                <p>- °<span>C</span></p>
-            </div>
-            <div class="temperature-description">
-                <p> - </p>
-            </div>
-            <div class="location">
-                <p>-</p>
-            </div>
-        </div>
-    </div>
-    <div class="main-w3layouts wrapper">
-        <div class="main-agileinfo">
-            <div class="agileits-top">
-                <div class="wthree-text">
-                    <label class="anim">
-                        <input type="checkbox" class="checkbox" required="">
-                        <span>Drought</span>
-                    </label>
-                    <div class="clear"> </div>
-                </div>
-                <div class="wthree-text">
-                    <label class="anim">
-                        <input type="checkbox" class="checkbox" required="">
-                        <span>Excessive Rainfall</span>
-                    </label>
-                    <div class="clear"> </div>
-                </div>
-                <div class="wthree-text">
-                    <label class="anim">
-                        <input type="checkbox" class="checkbox" required="">
-                        <span>Disease</span>
-                    </label>
-                    <div class="clear"> </div>
-                </div>
-                <div class="wthree-text">
-                    <label class="anim">
-                        <input type="checkbox" class="checkbox" required="">
-                        <span>Animals</span>
-                    </label>
-                    <div class="clear"> </div>
-                </div>
+<html>
+    <head>
+        <title>SCIC</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+        <link href="common.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+    </head>
+    <body>
+        <div class="main-w3layouts wrapper">
+             
+		<div class="main-agileinfo">
                 <div class="agileits-top">
-                    <form action="bank/farmerSidePage.html">
-                        <input type="submit" value="Claim Insurance">
-                    </form>
+                        <p>ENTER THE AMOUNT TO BE CLAIMED</p> </br>
+                        <input type="text" id="amount"> </br>
+                        <p>YOUR TOTAL BALANCE</p>  </br>
+                        <p id='balance'></p>
+                        <button id='deposit' style="margin-left:auto;margin-right:auto;display:block;margin-top:22%;margin-bottom:0%">Claim</button>
                 </div>
             </div>
-        </div>
-    </div>
+            <ul class="colorlib-bubbles">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>       
+        </div> 
+        <script type="module" src = "https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" ></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+        <script type="module" src = "http://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous" ></script>
+        <script>
+            var contract;
+            $(document).ready(function()
+            {   
+                web3 = new Web3(web3.currentProvider); 
+                var address="0x591f7f5Ad7104696768450Df9b8F450146B78F84";
+                var abi = [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "amt",
+				"type": "int256"
+			}
+		],
+		"name": "deposit",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getbalance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+                contract = new web3.eth.Contract(abi, address);
+                contract.methods.getbalance().call().then(function(bal)
+                {
+                    $('#balance').html(bal);
+                })
+            })
+            $('#deposit').click(function()
+            {
+                var amt = 0;
+                amt = parseInt($('#amount').val());
+                web3.eth.getAccounts().then(function(accounts)
+                {
+                    var acc = accounts[0];
+                    return contract.methods.deposit(amt).send({from: acc});
+                }).then(function(tx)
+                {
+                    console.log(tx);
+                }).catch(function(tx)
+                {
+                    console.log(tx);
+                })
+            })
+            
+            
+            </script>
 
-    <script src="/app.js"></script>
-    <ul class="colorlib-bubbles">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
 </body>
 </html>
-
-
