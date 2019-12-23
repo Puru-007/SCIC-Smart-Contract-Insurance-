@@ -1,0 +1,19 @@
+{
+  "name": "hackathon-webpage",
+  "version": "1.0.0",
+  "description": "Hi Everyone!",
+  "main": "script.js",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.1"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
